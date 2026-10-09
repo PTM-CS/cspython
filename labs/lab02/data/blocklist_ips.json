@@ -1,0 +1,30 @@
+{
+    "analysis_metadata": {
+        "generated_at": "2026-10-09 04:11:55",
+        "threshold": 4,
+        "window_minutes": 60,
+        "total_lines_analyzed": 20
+    },
+    "blocklist_ips": [
+        "203.0.113.77",
+        "198.51.100.88"
+    ],
+    "details": {
+        "203.0.113.77": {
+            "total_failures": 7,
+            "target_users": [
+                "admin"
+            ],
+            "first_seen": "2026-09-27 14:00:00",
+            "last_seen": "2026-09-27 14:03:30"
+        },
+        "198.51.100.88": {
+            "total_failures": 5,
+            "target_users": [
+                "test"
+            ],
+            "first_seen": "2026-09-27 16:00:00",
+            "last_seen": "2026-09-27 16:48:00"
+        }
+    }
+}

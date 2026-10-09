@@ -1,0 +1,13 @@
+# Віртуальне середовище
+.venv/
+venv/
+env/
+
+# Налаштування редактора (PyCharm / VS Code)
+.idea/
+.vscode/
+
+# Кеш та тимчасові файли
+.ruff_cache/
+__pycache__/
+*.pyc

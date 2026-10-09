@@ -1,11 +1,15 @@
+import os
 import random
 import sys
-import os
 
 # Коренева папку проекту щоб імпортувати дані з shared
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 
-from shared.student import STUDENT_NAME, GROUP_NAME, VARIANT_NUMBER #Імпорт персональних даних
+from shared.student import (  #Імпорт персональних даних
+    GROUP_NAME,
+    STUDENT_NAME,
+    VARIANT_NUMBER,
+)
 
 #Вхідні дані
 passwords = [
@@ -19,6 +23,7 @@ passwords = [
     "1234",
     "Elite@Secur1ty",
     "admin123",
+    "qqq"
 ]
 
 criteria = {

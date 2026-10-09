@@ -55,19 +55,48 @@ def log_event(func): #логування
                     pass
             logs.append(log_entry)
             with open(LOG_JSON_PATH, "w", encoding="utf-8") as f:
-                json.dump(logs, f, indent=4) #дамп в жсон
+                json.dump(logs, f, indent=4)  # дамп в жсон
 
     return wrapper
 
+
 def create_user(username, password):
-    return (username, generate_hash(password, PERSONAL_SALT))
+    if len(username) == 0:
+        print("пустий логін не може бути введено")
+        return None
+
+    try:
+        hash_result = generate_hash(password, PERSONAL_SALT)
+        return (username, hash_result)
+    except (ValidationError, ValueError) as e:
+        print(f"Помилка при створенні користувача '{username}': {e}")
+        return None
 
 def create_users(users_list):
-    os.makedirs(DATA_DIR, exist_ok=True) #створює папку якщо папка є то не викидає помилку
-    with open(USERS_CSV_PATH, "w", newline="", encoding="utf-8") as f:
-        csv.writer(f).writerows(
-            [create_user(u, p) for u, p in users_list] #записує в цсв
-        )
+    os.makedirs(DATA_DIR, exist_ok=True)
+    existing_usernames = set()
+    if os.path.exists(USERS_CSV_PATH):
+        with open(USERS_CSV_PATH, "r", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                if row:
+                    existing_usernames.add(row[0])
+
+    valid_users = []
+
+    for u, p in users_list:
+        if u in existing_usernames:
+            print(f"Логін '{u}' вже є в базі")
+            continue
+
+        user_data = create_user(u, p)
+        if user_data is not None:
+            valid_users.append(user_data)
+            existing_usernames.add(u)
+
+    if valid_users:
+        with open(USERS_CSV_PATH, "a", newline="", encoding="utf-8") as f:
+            csv.writer(f).writerows(valid_users)
 
 @log_event #фіксує виклики функції для логування
 def login(username: str, password: str) -> bool:
@@ -86,7 +115,8 @@ def main():
     )
 
     users_to_register = [(f"user{i}", f"GenericPassword{i:02d}!") for i in range(1, 11)] #Створює кортеж з 10 людей і паролями
-                                                                            #в завданні не сказано якими саме мають бути записи
+                                                                            #в завданні не сказано якими саме мають бути записи\
+    users_to_register = users_to_register + [(f"", f"fff")]
     try:
         create_users(users_to_register)
 
